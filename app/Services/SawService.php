@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services; 
 
 use App\Models\BobotSegmen;
 use App\Models\Destinasi;
@@ -10,7 +10,7 @@ use App\Models\AturanKelayakan;
  * ==========================================================================
  *  SawService — seluruh logika perhitungan Simple Additive Weighting (SAW)
  * ==========================================================================
- *
+ *Perbaikan normalisasi matriks SAW
  * Kelas ini sengaja TIDAK berisi kode tampilan dan TIDAK memanggil view.
  * Tugasnya hanya: hitung. Karena itu ia bisa diuji terpisah lewat
  * `php artisan saw:verify` (lihat app/Console/Commands/VerifikasiSaw.php).
