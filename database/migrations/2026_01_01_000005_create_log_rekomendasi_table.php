@@ -5,9 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Catatan setiap permintaan rekomendasi.
- * Dipakai untuk analisis sebaran rekomendasi (exposure) pada Bab IV:
- * destinasi mana yang sering muncul di lima besar untuk 36 kombinasi profil.
+ * Skema tabel pencatatan riwayat hasil rekomendasi per sesi pencarian.
  */
 return new class extends Migration
 {

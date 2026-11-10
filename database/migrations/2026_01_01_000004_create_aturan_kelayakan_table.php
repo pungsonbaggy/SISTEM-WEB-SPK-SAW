@@ -5,19 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Aturan kelayakan: batas skor C6 minimum agar destinasi boleh dipertimbangkan.
- * Contoh: minat Diving, kriteria C6, operator >=, threshold 2.
+ * Skema tabel ambang batas kelayakan (filter_threshold) skor C6 per minat.
  */
 return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('aturan_kelayakan', function (Blueprint $table) {
+        Schema::create('filter_threshold', function (Blueprint $table) {
             $table->id();
             $table->string('minat', 30)->unique();
             $table->string('kriteria', 10)->default('C6');
             $table->string('operator', 5)->default('>=');
-            $table->integer('threshold')->default(2);
+            $table->integer('threshold')->default(1);
             $table->string('keterangan', 100)->nullable();
             $table->timestamps();
         });
@@ -25,6 +24,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('aturan_kelayakan');
+        Schema::dropIfExists('filter_threshold');
     }
 };

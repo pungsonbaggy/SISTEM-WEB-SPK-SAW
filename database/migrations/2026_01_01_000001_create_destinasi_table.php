@@ -5,9 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Tabel destinasi = daftar alternatif (A1..A15) beserta skor kriteria C1..C5.
- * C6 tidak ada di sini karena nilainya berbeda untuk setiap minat
- * (lihat tabel skor_kesesuaian_aktivitas).
+ * Skema tabel destinasi wisata bahari (A1–A14) dan nilai kriteria C1–C6.
  */
 return new class extends Migration
 {
@@ -18,12 +16,18 @@ return new class extends Migration
             $table->string('kode', 5)->unique();
             $table->string('nama', 100);
             $table->text('deskripsi')->nullable();
-            $table->decimal('c1_jarak', 5, 2);       // km
-            $table->decimal('c2_biaya', 10, 2);      // ribu rupiah
-            $table->integer('c3_fasilitas');         // skala 1-5
-            $table->integer('c4_keindahan');         // skala 1-5
-            $table->integer('c5_kebersihan');        // skala 1-5
-            $table->unsignedInteger('kunjungan_2025');
+            $table->decimal('c1_jarak', 6, 2);
+            $table->decimal('c2_biaya', 10, 2);
+            $table->integer('c3_fasilitas');
+            $table->integer('c4_keindahan');
+            $table->integer('c5_kebersihan');
+            $table->integer('c6_aktivitas');
+            $table->integer('total_fasilitas')->default(0);
+            $table->integer('total_aktivitas')->default(0);
+            $table->json('fasilitas_list')->nullable();
+            $table->json('aktivitas_list')->nullable();
+            $table->string('foto')->nullable();
+            $table->json('foto_list')->nullable();
             $table->timestamps();
         });
     }

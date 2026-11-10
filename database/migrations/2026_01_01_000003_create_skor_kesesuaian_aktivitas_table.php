@@ -5,9 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Skor C6 (Kesesuaian Aktivitas) untuk setiap pasangan destinasi x minat.
- * Inilah yang membuat personalisasi mungkin: destinasi yang sama bisa
- * bernilai 5 untuk snorkeling tetapi 1 untuk diving.
+ * Skema tabel skor kesesuaian aktivitas (C6) untuk setiap kombinasi destinasi dan minat.
  */
 return new class extends Migration
 {
@@ -17,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('destinasi_id')->constrained('destinasi')->cascadeOnDelete();
             $table->string('minat', 30);
-            $table->integer('skor'); // 1-5
+            $table->integer('skor');
             $table->timestamps();
 
             $table->unique(['destinasi_id', 'minat']);

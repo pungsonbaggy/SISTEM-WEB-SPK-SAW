@@ -5,9 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Bobot kriteria per segmen profil (Tabel 3.10 skripsi).
- * Satu baris = satu nilai segmen, misal segmen=minat nilai=Snorkeling.
- * w1..w6 harus berjumlah 1.0000.
+ * Skema tabel bobot kriteria (w1–w6) per segmen profil wisatawan.
  */
 return new class extends Migration
 {
@@ -15,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('bobot_segmen', function (Blueprint $table) {
             $table->id();
-            $table->string('segmen', 30);   // minat | anggaran | jarak
-            $table->string('nilai', 30);    // Snorkeling | Rendah | Dekat | ...
+            $table->string('segmen', 30);
+            $table->string('nilai', 30);
             $table->decimal('w1', 6, 4);
             $table->decimal('w2', 6, 4);
             $table->decimal('w3', 6, 4);
@@ -25,7 +23,6 @@ return new class extends Migration
             $table->decimal('w6', 6, 4);
             $table->timestamps();
 
-            // satu kombinasi segmen+nilai hanya boleh ada satu baris
             $table->unique(['segmen', 'nilai']);
         });
     }
