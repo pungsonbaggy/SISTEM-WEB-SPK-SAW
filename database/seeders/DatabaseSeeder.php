@@ -5,9 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 /**
- * Urutan seeding penting:
- * destinasi dulu (karena skor C6 merujuk id destinasi),
- * baru skor, bobot, aturan, dan akun admin.
+ * Seeder utama untuk menginisialisasi data destinasi, skor C6, bobot segmen, aturan, dan akun admin.
  */
 class DatabaseSeeder extends Seeder
 {

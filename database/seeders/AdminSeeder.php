@@ -7,8 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * Akun admin untuk halaman pengelolaan.
- * GANTI PASSWORD sebelum aplikasi dipakai di luar komputer sendiri.
+ * Seeder akun administrator awal sistem.
  */
 class AdminSeeder extends Seeder
 {

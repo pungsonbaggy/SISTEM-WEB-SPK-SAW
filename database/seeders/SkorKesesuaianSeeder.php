@@ -7,83 +7,41 @@ use App\Models\SkorKesesuaianAktivitas;
 use Illuminate\Database\Seeder;
 
 /**
- * Skor C6 (kesesuaian aktivitas) untuk 15 destinasi x 4 minat (Tabel 3.13).
- * Inilah dasar penyaringan kelayakan pada SawService.
+ * Seeder matriks skor kesesuaian aktivitas (C6) per minat untuk 14 destinasi.
  */
 class SkorKesesuaianSeeder extends Seeder
 {
     public function run(): void
     {
-        $data = [
-            ['kode' => 'A1', 'minat' => 'Snorkeling', 'skor' => 5],
-            ['kode' => 'A1', 'minat' => 'Diving', 'skor' => 3],
-            ['kode' => 'A1', 'minat' => 'Wisata Pantai', 'skor' => 3],
-            ['kode' => 'A1', 'minat' => 'Wisata Pulau', 'skor' => 4],
-            ['kode' => 'A2', 'minat' => 'Snorkeling', 'skor' => 2],
-            ['kode' => 'A2', 'minat' => 'Diving', 'skor' => 1],
-            ['kode' => 'A2', 'minat' => 'Wisata Pantai', 'skor' => 4],
-            ['kode' => 'A2', 'minat' => 'Wisata Pulau', 'skor' => 2],
-            ['kode' => 'A3', 'minat' => 'Snorkeling', 'skor' => 2],
-            ['kode' => 'A3', 'minat' => 'Diving', 'skor' => 1],
-            ['kode' => 'A3', 'minat' => 'Wisata Pantai', 'skor' => 4],
-            ['kode' => 'A3', 'minat' => 'Wisata Pulau', 'skor' => 2],
-            ['kode' => 'A4', 'minat' => 'Snorkeling', 'skor' => 1],
-            ['kode' => 'A4', 'minat' => 'Diving', 'skor' => 1],
-            ['kode' => 'A4', 'minat' => 'Wisata Pantai', 'skor' => 4],
-            ['kode' => 'A4', 'minat' => 'Wisata Pulau', 'skor' => 1],
-            ['kode' => 'A5', 'minat' => 'Snorkeling', 'skor' => 2],
-            ['kode' => 'A5', 'minat' => 'Diving', 'skor' => 1],
-            ['kode' => 'A5', 'minat' => 'Wisata Pantai', 'skor' => 4],
-            ['kode' => 'A5', 'minat' => 'Wisata Pulau', 'skor' => 2],
-            ['kode' => 'A6', 'minat' => 'Snorkeling', 'skor' => 2],
-            ['kode' => 'A6', 'minat' => 'Diving', 'skor' => 1],
-            ['kode' => 'A6', 'minat' => 'Wisata Pantai', 'skor' => 4],
-            ['kode' => 'A6', 'minat' => 'Wisata Pulau', 'skor' => 2],
-            ['kode' => 'A7', 'minat' => 'Snorkeling', 'skor' => 4],
-            ['kode' => 'A7', 'minat' => 'Diving', 'skor' => 5],
-            ['kode' => 'A7', 'minat' => 'Wisata Pantai', 'skor' => 3],
-            ['kode' => 'A7', 'minat' => 'Wisata Pulau', 'skor' => 5],
-            ['kode' => 'A8', 'minat' => 'Snorkeling', 'skor' => 3],
-            ['kode' => 'A8', 'minat' => 'Diving', 'skor' => 2],
-            ['kode' => 'A8', 'minat' => 'Wisata Pantai', 'skor' => 4],
-            ['kode' => 'A8', 'minat' => 'Wisata Pulau', 'skor' => 2],
-            ['kode' => 'A9', 'minat' => 'Snorkeling', 'skor' => 4],
-            ['kode' => 'A9', 'minat' => 'Diving', 'skor' => 3],
-            ['kode' => 'A9', 'minat' => 'Wisata Pantai', 'skor' => 3],
-            ['kode' => 'A9', 'minat' => 'Wisata Pulau', 'skor' => 4],
-            ['kode' => 'A10', 'minat' => 'Snorkeling', 'skor' => 1],
-            ['kode' => 'A10', 'minat' => 'Diving', 'skor' => 1],
-            ['kode' => 'A10', 'minat' => 'Wisata Pantai', 'skor' => 4],
-            ['kode' => 'A10', 'minat' => 'Wisata Pulau', 'skor' => 1],
-            ['kode' => 'A11', 'minat' => 'Snorkeling', 'skor' => 2],
-            ['kode' => 'A11', 'minat' => 'Diving', 'skor' => 1],
-            ['kode' => 'A11', 'minat' => 'Wisata Pantai', 'skor' => 4],
-            ['kode' => 'A11', 'minat' => 'Wisata Pulau', 'skor' => 1],
-            ['kode' => 'A12', 'minat' => 'Snorkeling', 'skor' => 1],
-            ['kode' => 'A12', 'minat' => 'Diving', 'skor' => 1],
-            ['kode' => 'A12', 'minat' => 'Wisata Pantai', 'skor' => 4],
-            ['kode' => 'A12', 'minat' => 'Wisata Pulau', 'skor' => 1],
-            ['kode' => 'A13', 'minat' => 'Snorkeling', 'skor' => 4],
-            ['kode' => 'A13', 'minat' => 'Diving', 'skor' => 3],
-            ['kode' => 'A13', 'minat' => 'Wisata Pantai', 'skor' => 3],
-            ['kode' => 'A13', 'minat' => 'Wisata Pulau', 'skor' => 4],
-            ['kode' => 'A14', 'minat' => 'Snorkeling', 'skor' => 2],
-            ['kode' => 'A14', 'minat' => 'Diving', 'skor' => 2],
-            ['kode' => 'A14', 'minat' => 'Wisata Pantai', 'skor' => 3],
-            ['kode' => 'A14', 'minat' => 'Wisata Pulau', 'skor' => 2],
-            ['kode' => 'A15', 'minat' => 'Snorkeling', 'skor' => 5],
-            ['kode' => 'A15', 'minat' => 'Diving', 'skor' => 4],
-            ['kode' => 'A15', 'minat' => 'Wisata Pantai', 'skor' => 3],
-            ['kode' => 'A15', 'minat' => 'Wisata Pulau', 'skor' => 5],
+        $matriks = [
+            'A1' => ['Snorkeling' => 5, 'Diving' => 5, 'Wisata Pantai' => 5, 'Wisata Pulau' => 5],
+            'A2' => ['Snorkeling' => 5, 'Diving' => 1, 'Wisata Pantai' => 5, 'Wisata Pulau' => 5],
+            'A3' => ['Snorkeling' => 1, 'Diving' => 1, 'Wisata Pantai' => 5, 'Wisata Pulau' => 1],
+            'A4' => ['Snorkeling' => 1, 'Diving' => 1, 'Wisata Pantai' => 5, 'Wisata Pulau' => 1],
+            'A5' => ['Snorkeling' => 1, 'Diving' => 1, 'Wisata Pantai' => 5, 'Wisata Pulau' => 1],
+            'A6' => ['Snorkeling' => 1, 'Diving' => 1, 'Wisata Pantai' => 5, 'Wisata Pulau' => 1],
+            'A7' => ['Snorkeling' => 5, 'Diving' => 5, 'Wisata Pantai' => 5, 'Wisata Pulau' => 5],
+            'A8' => ['Snorkeling' => 1, 'Diving' => 1, 'Wisata Pantai' => 5, 'Wisata Pulau' => 1],
+            'A9' => ['Snorkeling' => 5, 'Diving' => 5, 'Wisata Pantai' => 5, 'Wisata Pulau' => 5],
+            'A10' => ['Snorkeling' => 1, 'Diving' => 1, 'Wisata Pantai' => 5, 'Wisata Pulau' => 1],
+            'A11' => ['Snorkeling' => 5, 'Diving' => 1, 'Wisata Pantai' => 5, 'Wisata Pulau' => 1],
+            'A12' => ['Snorkeling' => 1, 'Diving' => 1, 'Wisata Pantai' => 5, 'Wisata Pulau' => 1],
+            'A13' => ['Snorkeling' => 5, 'Diving' => 5, 'Wisata Pantai' => 5, 'Wisata Pulau' => 5],
+            'A14' => ['Snorkeling' => 5, 'Diving' => 5, 'Wisata Pantai' => 5, 'Wisata Pulau' => 5],
         ];
 
-        $id = Destinasi::pluck('id', 'kode');
+        foreach ($matriks as $kode => $skorMinat) {
+            $destinasi = Destinasi::where('kode', $kode)->first();
+            if (! $destinasi) {
+                continue;
+            }
 
-        foreach ($data as $d) {
-            SkorKesesuaianAktivitas::updateOrCreate(
-                ['destinasi_id' => $id[$d['kode']], 'minat' => $d['minat']],
-                ['skor' => $d['skor']]
-            );
+            foreach ($skorMinat as $minat => $skor) {
+                SkorKesesuaianAktivitas::updateOrCreate(
+                    ['destinasi_id' => $destinasi->id, 'minat' => $minat],
+                    ['skor' => $skor]
+                );
+            }
         }
     }
 }
