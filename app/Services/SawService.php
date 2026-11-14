@@ -1,88 +1,41 @@
 <?php
 
-namespace App\Services; 
+namespace App\Services;
 
+use App\Models\AturanKelayakan;
 use App\Models\BobotSegmen;
 use App\Models\Destinasi;
-use App\Models\AturanKelayakan;
 
-/**
- * ==========================================================================
- *  SawService — seluruh logika perhitungan Simple Additive Weighting (SAW)
- * ==========================================================================
- *Perbaikan normalisasi matriks SAW
- * Kelas ini sengaja TIDAK berisi kode tampilan dan TIDAK memanggil view.
- * Tugasnya hanya: hitung. Karena itu ia bisa diuji terpisah lewat
- * `php artisan saw:verify` (lihat app/Console/Commands/VerifikasiSaw.php).
- *
- * Alur (sesuai Subbab 3.4.6 skripsi):
- *   1. ambil matriks keputusan (15 destinasi x 6 kriteria)
- *   2. ambil dan gabungkan bobot sesuai profil wisatawan
- *   3. normalisasi matriks dengan Rumus 2.1 (benefit) dan 2.2 (cost)
- *   4. saring destinasi yang tidak layak (skor C6 < ambang)
- *   5. hitung Vi dengan Rumus 2.3
- *   6. urutkan dari Vi terbesar
- *
- * CATATAN PENTING (jangan diubah tanpa memahami akibatnya):
- *   Normalisasi selalu dihitung dari SELURUH 15 destinasi, bukan hanya
- *   kandidat yang lolos penyaringan. Kalau dihitung dari kandidat saja,
- *   nilai r berubah setiap kali profil berubah dan hasil tidak bisa
- *   diverifikasi manual seperti pada Tabel 3.14 skripsi.
- */
 class SawService
 {
-    /** Pilihan yang sah untuk form. Dipakai juga oleh validasi. */
     public const MINAT = ['Snorkeling', 'Diving', 'Wisata Pantai', 'Wisata Pulau'];
     public const ANGGARAN = ['Rendah', 'Sedang', 'Tinggi'];
     public const JARAK = ['Dekat', 'Sedang', 'Jauh'];
 
-    /** Nama kriteria untuk ditampilkan. Urutan = kolom w1..w6. */
     public const KRITERIA = [
         'C1' => 'Jarak dari Pusat Kota',
-        'C2' => 'Biaya Masuk',
+        'C2' => 'Biaya',
         'C3' => 'Kelengkapan Fasilitas',
         'C4' => 'Keindahan Alam',
         'C5' => 'Kebersihan Pantai',
-        'C6' => 'Kesesuaian Aktivitas',
+        'C6' => 'Keragaman Kesesuaian Aktivitas',
     ];
 
-    /**
-     * Titik masuk utama.
-     *
-     * @return array{
-     *   bobot: array<int,float>,
-     *   hasil: array<int,array>,
-     *   dikeluarkan: array<int,string>,
-     *   ambang: int,
-     *   normalisasi: array<string,array<int,float>>
-     * }
-     */
+    // Tahap utama perhitungan SAW: gabungkan bobot, normalisasi matriks, saring ambang C6, dan urutkan Vi
     public function hitung(string $minat, string $anggaran, string $jarak): array
     {
-        // (1) Matriks keputusan: 15 destinasi beserta skor C6-nya.
         $destinasi = Destinasi::with('skorAktivitas')->orderBy('id')->get();
-
-        // Skor C6 khusus minat yang dipilih, dipetakan per id destinasi.
-        $skorC6 = [];
-        foreach ($destinasi as $d) {
-            $skorC6[$d->id] = (int) ($d->skorUntuk($minat) ?? 0);
-        }
-
-        // (2) Bobot sesuai profil (minat + anggaran + jarak).
         $bobot = $this->bobotProfil($minat, $anggaran, $jarak);
-
-        // (3) Normalisasi seluruh 15 destinasi.
-        $normalisasi = $this->normalisasi($destinasi, $skorC6);
-
-        // (4) Ambang kelayakan untuk minat ini (default 2).
+        $normalisasi = $this->normalisasi($destinasi, $minat);
         $ambang = $this->ambang($minat);
 
-        // (5) Hitung Vi hanya untuk destinasi yang layak.
         $hasil = [];
         $dikeluarkan = [];
 
         foreach ($destinasi as $d) {
-            if ($skorC6[$d->id] < $ambang) {
+            $skorC6 = (int) ($d->skorAktivitas->firstWhere('minat', $minat)?->skor ?? $d->c6_aktivitas ?? 1);
+
+            if ($skorC6 < $ambang) {
                 $dikeluarkan[] = $d->kode;
                 continue;
             }
@@ -90,7 +43,6 @@ class SawService
             $kontribusi = [];
             $v = 0.0;
             for ($i = 0; $i < 6; $i++) {
-                // kontribusi kriteria ke-i = bobot x nilai ternormalisasi
                 $kontribusi[$i] = $bobot[$i] * $normalisasi[$d->kode][$i];
                 $v += $kontribusi[$i];
             }
@@ -99,19 +51,25 @@ class SawService
                 'kode' => $d->kode,
                 'nama' => $d->nama,
                 'destinasi_id' => $d->id,
-                'skor_c6' => $skorC6[$d->id],
+                'skor_c6' => $skorC6,
                 'r' => $normalisasi[$d->kode],
                 'kontribusi' => $kontribusi,
                 'v' => $v,
                 'v_tampil' => round($v, 4),
+                'foto' => $d->foto,
+                'deskripsi' => $d->deskripsi,
+                'c1_jarak' => $d->c1_jarak,
+                'c2_biaya' => $d->c2_biaya,
+                'c3_fasilitas' => $d->c3_fasilitas,
+                'c4_keindahan' => $d->c4_keindahan,
+                'c5_kebersihan' => $d->c5_kebersihan,
+                'total_fasilitas' => $d->total_fasilitas,
+                'fasilitas_list' => $d->fasilitas_list,
+                'aktivitas_list' => $d->aktivitas_list,
             ];
         }
 
-        // (6) Urutkan menurun. Kalau Vi sama, urutkan berdasarkan kode
-        //     supaya hasil selalu konsisten (tidak acak).
-        usort($hasil, function ($a, $b) {
-            return [$b['v'], $a['kode']] <=> [$a['v'], $b['kode']];
-        });
+        usort($hasil, fn ($a, $b) => [$b['v'], $a['kode']] <=> [$a['v'], $b['kode']]);
 
         return [
             'bobot' => $bobot,
@@ -122,12 +80,7 @@ class SawService
         ];
     }
 
-    /**
-     * Gabungkan bobot tiga segmen lalu normalisasi ulang.
-     *
-     * Rumus: wj = (w_minat_j + w_anggaran_j + w_jarak_j) / 3
-     * Hasil akhirnya dipaksa berjumlah tepat 1.0000.
-     */
+    // Rata-rata bobot dari 3 segmen profil (minat, anggaran, jarak) lalu normalkan agar total = 1
     public function bobotProfil(string $minat, string $anggaran, string $jarak): array
     {
         $sumber = [
@@ -142,8 +95,6 @@ class SawService
                 ->where('nilai', $nilai)
                 ->first();
 
-            // Kalau data bobot belum di-seed, hentikan dengan pesan jelas
-            // daripada menghasilkan angka 0 yang membingungkan.
             if (! $baris) {
                 throw new \RuntimeException(
                     "Bobot segmen '{$segmen}' = '{$nilai}' tidak ditemukan. Jalankan: php artisan db:seed"
@@ -161,14 +112,6 @@ class SawService
         return $this->normalisasiBobot($gabung);
     }
 
-    /**
-     * Normalisasi bobot agar totalnya tepat 1.0000.
-     *
-     * Caranya: bagi dengan total, bulatkan 4 desimal, lalu koreksi elemen
-     * terbesar dengan selisih pembulatan. Tanpa koreksi ini, penjumlahan
-     * empat desimal bisa menghasilkan 0.9999 dan menggagalkan uji
-     * "sigma w = 1.0000" pada Bab IV.
-     */
     public function normalisasiBobot(array $bobot): array
     {
         $total = array_sum($bobot);
@@ -190,57 +133,48 @@ class SawService
         return $hasil;
     }
 
-    /**
-     * Normalisasi matriks keputusan.
-     *
-     * C1, C2 = cost    -> r = min(x) / x        (Rumus 2.2)
-     * C3..C5 = benefit -> r = x / max(x)        (Rumus 2.1)
-     * C6     = benefit -> r = skor / max(skor)  (Rumus 2.1, per minat)
-     *
-     * min dan max diambil dari SELURUH destinasi (lihat catatan di atas).
-     */
-    public function normalisasi($destinasi, array $skorC6): array
+    // Normalisasi matriks keputusan: Cost (C1, C2) = min/x, Benefit (C3-C6) = x/max
+    public function normalisasi($destinasi, ?string $minat = null): array
     {
-        $minC1 = $destinasi->min('c1_jarak');
-        $minC2 = $destinasi->min('c2_biaya');
-        $maxC3 = $destinasi->max('c3_fasilitas');
-        $maxC4 = $destinasi->max('c4_keindahan');
-        $maxC5 = $destinasi->max('c5_kebersihan');
-        $maxC6 = max($skorC6 ?: [1]);
+        $minC1 = (float) $destinasi->min('c1_jarak');
+        $minC2 = (float) $destinasi->min('c2_biaya');
+        $maxC3 = (float) $destinasi->max('c3_fasilitas');
+        $maxC4 = (float) $destinasi->max('c4_keindahan');
+        $maxC5 = (float) $destinasi->max('c5_kebersihan');
+        $maxC6 = 5.0;
 
         $r = [];
         foreach ($destinasi as $d) {
+            if ($minat !== null) {
+                $skorC6 = (float) ($d->skorAktivitas->firstWhere('minat', $minat)?->skor ?? $d->c6_aktivitas ?? 1);
+            } else {
+                $skorC6 = (float) ($d->c6_aktivitas ?? 5);
+            }
+
             $r[$d->kode] = [
-                $minC1 / (float) $d->c1_jarak,          // C1 cost
-                $minC2 / (float) $d->c2_biaya,          // C2 cost
-                (float) $d->c3_fasilitas / $maxC3,      // C3 benefit
-                (float) $d->c4_keindahan / $maxC4,      // C4 benefit
-                (float) $d->c5_kebersihan / $maxC5,     // C5 benefit
-                $skorC6[$d->id] / $maxC6,               // C6 benefit (per minat)
+                $minC1 / (float) $d->c1_jarak,
+                $minC2 / (float) $d->c2_biaya,
+                (float) $d->c3_fasilitas / $maxC3,
+                (float) $d->c4_keindahan / $maxC4,
+                (float) $d->c5_kebersihan / $maxC5,
+                $skorC6 / $maxC6,
             ];
         }
 
         return $r;
     }
 
-    /** Ambang kelayakan untuk satu minat; default 2 bila aturan belum ada. */
     public function ambang(string $minat): int
     {
-        return (int) (AturanKelayakan::where('minat', $minat)->value('threshold') ?? 2);
+        return (int) (AturanKelayakan::where('minat', $minat)->value('threshold') ?? 1);
     }
 
-    /**
-     * Analisis sebaran rekomendasi untuk 36 kombinasi profil.
-     * Dipakai halaman admin/analisis dan pembahasan Bab IV.
-     */
     public function analisisSebaran(): array
     {
         $semua = Destinasi::orderBy('id')->get();
         $hitung = [];
-        $juara = [];
         foreach ($semua as $d) {
-            $hitung[$d->kode] = ['top5' => 0, 'juara' => 0, 'nama' => $d->nama, 'kunjungan' => $d->kunjungan_2025];
-            $juara[$d->kode] = 0;
+            $hitung[$d->kode] = ['top5' => 0, 'juara' => 0, 'nama' => $d->nama];
         }
 
         $totalProfil = 0;
@@ -253,7 +187,7 @@ class SawService
                         $hitung[$row['kode']]['top5']++;
                     }
                     if (! empty($hasil)) {
-                        $juara[$hasil[0]['kode']]++;
+                        $hitung[$hasil[0]['kode']]['juara']++;
                     }
                 }
             }
@@ -264,10 +198,9 @@ class SawService
             $baris[] = [
                 'kode' => $kode,
                 'nama' => $d['nama'],
-                'kunjungan' => $d['kunjungan'],
                 'top5' => $d['top5'],
                 'persen' => $totalProfil ? round($d['top5'] / $totalProfil * 100, 1) : 0,
-                'juara' => $juara[$kode],
+                'juara' => $d['juara'],
             ];
         }
 
