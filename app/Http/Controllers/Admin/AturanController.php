@@ -7,10 +7,6 @@ use App\Models\AturanKelayakan;
 use App\Services\SawService;
 use Illuminate\Http\Request;
 
-/**
- * Pengelolaan aturan kelayakan (F-13), yaitu batas skor C6 minimum
- * per minat. Default 2: destinasi dengan skor 1 tidak diikutkan.
- */
 class AturanController extends Controller
 {
     public function index()

@@ -6,10 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * Login admin (F-10, NF-06).
- * Memakai guard "web" bawaan Laravel dengan tabel users.
- */
 class AuthController extends Controller
 {
     public function showLogin()
@@ -38,7 +34,6 @@ class AuthController extends Controller
                 ->withErrors(['email' => 'Email atau password salah.']);
         }
 
-        // Cegah session fixation: buat id session baru setelah login.
         $request->session()->regenerate();
 
         return redirect()->intended(route('admin.destinasi.index'));

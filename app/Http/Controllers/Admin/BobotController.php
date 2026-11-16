@@ -7,20 +7,12 @@ use App\Models\BobotSegmen;
 use App\Services\SawService;
 use Illuminate\Http\Request;
 
-/**
- * Pengelolaan bobot per segmen profil (F-12).
- * Bobot yang disimpan harus berjumlah 1.0000; sistem menormalkan ulang
- * setelah admin mengubah angka, supaya tidak pernah ada baris yang
- * totalnya 0,9999.
- */
 class BobotController extends Controller
 {
     public function index()
     {
-        $semua = BobotSegmen::orderBy('id')->get()->groupBy('segmen');
-
         return view('admin.bobot.index', [
-            'semua' => $semua,
+            'semua' => BobotSegmen::orderBy('id')->get()->groupBy('segmen'),
             'kriteria' => SawService::KRITERIA,
         ]);
     }
@@ -41,7 +33,6 @@ class BobotController extends Controller
                 continue;
             }
 
-            // Normalkan supaya totalnya tepat 1.0000.
             $w = $saw->normalisasiBobot(array_map('floatval', array_values($nilai)));
 
             $baris->update([

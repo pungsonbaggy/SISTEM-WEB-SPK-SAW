@@ -5,17 +5,11 @@ namespace App\Http\Requests;
 use App\Services\SawService;
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Validasi form profil wisatawan (kebutuhan fungsional F-02).
- *
- * Kenapa dipisah dari controller? Supaya aturan validasi punya satu
- * tempat, mudah dibaca penguji, dan controller tetap ringkas.
- */
 class ProfilRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // wisatawan tidak perlu login
+        return true;
     }
 
     public function rules(): array
