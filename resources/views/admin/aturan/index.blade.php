@@ -1,16 +1,30 @@
 @extends('layouts.app')
 
-@section('judul', 'Aturan Kelayakan — Admin')
+@section('judul', 'Aturan Kelayakan – Admin')
 
 @section('konten')
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div>
-            <h1 class="h3 mb-0">Aturan Kelayakan</h1>
-            <p class="text-muted small mb-0">
-                Batas minimal skor C6 agar destinasi diikutkan dalam perangkingan (Tabel 3.24 skripsi).
-            </p>
+    <div class="admin-nav-bar">
+        <div class="admin-nav-tabs">
+            <a href="{{ route('admin.destinasi.index') }}" class="admin-tab-link">
+                <i class="bi bi-geo-alt"></i> Data Destinasi
+            </a>
+            <a href="{{ route('admin.bobot.index') }}" class="admin-tab-link">
+                <i class="bi bi-sliders"></i> Bobot Segmen
+            </a>
+            <a href="{{ route('admin.aturan.index') }}" class="admin-tab-link active">
+                <i class="bi bi-funnel"></i> Aturan Kelayakan
+            </a>
+            <a href="{{ route('admin.analisis.index') }}" class="admin-tab-link">
+                <i class="bi bi-bar-chart-line"></i> Analisis Sebaran
+            </a>
         </div>
-        <a href="{{ route('admin.destinasi.index') }}" class="btn btn-outline-secondary btn-sm">Data Destinasi</a>
+    </div>
+
+    <div class="mb-3">
+        <h1 class="h4 fw-bold mb-1" style="font-family: 'Poppins', sans-serif;">Aturan Kelayakan</h1>
+        <p class="text-muted small mb-0">
+            Batas minimal skor C6 agar destinasi diikutkan dalam perangkingan.
+        </p>
     </div>
 
     @if ($errors->any())
@@ -21,46 +35,48 @@
         @csrf
         @method('PUT')
 
-        <div class="card">
-            <table class="table align-middle mb-0">
-                <thead class="table-light">
-                <tr>
-                    <th>Minat</th>
-                    <th>Kriteria</th>
-                    <th style="width:140px">Operator</th>
-                    <th style="width:160px">Ambang minimum</th>
-                    <th>Keterangan</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($minat as $m)
-                    @php $baris = $aturan->firstWhere('minat', $m); @endphp
+        <div class="card card-custom">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 table-custom">
+                    <thead>
                     <tr>
-                        <td><strong>{{ $m }}</strong></td>
-                        <td>{{ $baris->kriteria ?? 'C6' }}</td>
-                        <td>&ge; (lebih besar atau sama dengan)</td>
-                        <td>
-                            <input type="number" min="1" max="5" class="form-control form-control-sm"
-                                   name="threshold[{{ $m }}]"
-                                   value="{{ old('threshold.' . $m, $baris->threshold ?? 2) }}">
-                        </td>
-                        <td class="text-muted small">
-                            {{ $baris->keterangan ?? '-' }}
-                        </td>
+                        <th style="width: 180px;">Minat Wisatawan</th>
+                        <th style="width: 110px;">Kriteria</th>
+                        <th style="width: 240px;">Operator</th>
+                        <th style="width: 160px;">Ambang Minimum</th>
+                        <th>Keterangan</th>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    @foreach ($minat as $m)
+                        @php $baris = $aturan->firstWhere('minat', $m); @endphp
+                        <tr>
+                            <td><strong>{{ $m }}</strong></td>
+                            <td><span class="badge bg-light text-dark border font-mono">{{ $baris->kriteria ?? 'C6' }}</span></td>
+                            <td class="text-muted small">&ge; (lebih besar atau sama dengan)</td>
+                            <td>
+                                <input type="number" min="1" max="5" class="form-control form-control-sm text-center font-mono bg-white"
+                                       name="threshold[{{ $m }}]"
+                                       value="{{ old('threshold.' . $m, $baris->threshold ?? 1) }}">
+                            </td>
+                            <td class="text-muted small">
+                                {{ $baris->keterangan ?? '-' }}
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <button class="btn text-white mt-3" style="background-color:var(--laut)" type="submit">
-            Simpan aturan
+        <button class="btn-marine mt-3" type="submit">
+            <i class="bi bi-check-lg"></i> Simpan Aturan Kelayakan
         </button>
     </form>
 
-    <div class="alert alert-light border mt-3 small mb-0">
-        <strong>Catatan:</strong> menaikkan ambang membuat destinasi yang dipertimbangkan semakin sedikit.
-        Jika semua destinasi tersaring, sistem menampilkan pesan bahwa tidak ada destinasi layak
-        (lihat skenario pengujian nomor 4 pada Tabel 3.26).
+    <div class="alert alert-light border mt-3 small mb-0 card-custom">
+        <i class="bi bi-info-circle me-1 text-primary"></i>
+        <strong>Catatan:</strong> Menaikkan ambang batas membuat destinasi yang dipertimbangkan semakin selektif.
+        Jika semua destinasi tersaring, sistem menampilkan pesan bahwa tidak ada destinasi yang layak.
     </div>
 @endsection
