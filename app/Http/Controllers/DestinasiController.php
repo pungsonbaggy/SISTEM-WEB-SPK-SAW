@@ -4,13 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Destinasi;
 use App\Services\SawService;
+use Illuminate\Http\Request;
 
-/**
- * Halaman detail destinasi (F-08 dan F-09): skor enam kriteria
- * beserta kontribusinya terhadap nilai preferensi.
- */
 class DestinasiController extends Controller
 {
+    public function index(Request $request)
+    {
+        $request->session()->forget('rekomendasi');
+        $destinasi = Destinasi::orderBy('id')->get();
+
+        return view('destinasi.index', [
+            'destinasi' => $destinasi,
+            'totalDestinasi' => $destinasi->count(),
+        ]);
+    }
+
     public function show(string $kode, SawService $saw)
     {
         $destinasi = Destinasi::with('skorAktivitas')->where('kode', $kode)->firstOrFail();
@@ -21,8 +29,6 @@ class DestinasiController extends Controller
         $bobot = null;
         $normalisasi = null;
 
-        // Kalau wisatawan datang dari halaman hasil, tampilkan juga
-        // rincian perhitungan untuk profil yang sedang aktif.
         if ($sesi) {
             $hasil = $saw->hitung($sesi['profil']['minat'], $sesi['profil']['anggaran'], $sesi['profil']['jarak']);
             $baris = collect($hasil['hasil'])->firstWhere('kode', $kode);
@@ -39,9 +45,9 @@ class DestinasiController extends Controller
             'destinasi' => $destinasi,
             'kriteria' => SawService::KRITERIA,
             'kontribusi' => $kontribusi,
-            'normalisasi' => $normalisasi,
             'nilaiV' => $nilaiV,
             'bobot' => $bobot,
+            'normalisasi' => $normalisasi,
             'sesi' => $sesi,
         ]);
     }
