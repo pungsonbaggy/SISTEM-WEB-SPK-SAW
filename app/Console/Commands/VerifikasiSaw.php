@@ -6,20 +6,7 @@ use App\Services\SawService;
 use Illuminate\Console\Command;
 
 /**
- * ==========================================================================
- *  php artisan saw:verify
- * ==========================================================================
- *
- * Membandingkan hasil perhitungan sistem dengan angka acuan pada
- * tests/golden_tests.json (angka yang sama dengan Tabel 3.10 - Tabel 3.17
- * skripsi).
- *
- * Satu perintah ini menghasilkan bukti untuk skenario pengujian fungsional
- * nomor 5 sampai 11 pada Tabel 3.26, sehingga tidak perlu mencocokkan
- * manual satu per satu di Excel.
- *
- * Keluar dengan kode 0 jika semua lolos, 1 jika ada yang gagal
- * (berguna untuk CI/CD maupun lampiran bukti pengujian).
+ * Perintah CLI untuk memverifikasi hasil perhitungan SAW terhadap data acuan (tests/golden_tests.json).
  */
 class VerifikasiSaw extends Command
 {
@@ -51,7 +38,6 @@ class VerifikasiSaw extends Command
 
             $hasil = $saw->hitung($p['minat'], $p['anggaran'], $p['jarak']);
 
-            // --- 1. bobot segmen (skenario uji 5) ---
             $total++;
             $selisihBobot = 0.0;
             foreach ($kasus['bobot'] as $i => $acuan) {
@@ -59,12 +45,10 @@ class VerifikasiSaw extends Command
             }
             $gagal += $this->lapor('Bobot segmen sesuai acuan', $selisihBobot <= $tol, $selisihBobot);
 
-            // --- 2. total bobot = 1.0000 (skenario uji 6) ---
             $total++;
             $sum = abs(array_sum($hasil['bobot']) - 1.0);
             $gagal += $this->lapor('Total bobot = 1,0000', $sum <= 1e-9, $sum);
 
-            // --- 3. destinasi yang dikeluarkan (skenario uji 3) ---
             $total++;
             $sama = $hasil['dikeluarkan'] == $kasus['dikeluarkan'];
             $this->lapor(
@@ -75,7 +59,6 @@ class VerifikasiSaw extends Command
             );
             $gagal += $sama ? 0 : 1;
 
-            // --- 4. lima besar (skenario uji 9 & 10) ---
             $this->line('    Lima besar:');
             foreach ($kasus['top5'] as $i => $acuan) {
                 $total++;
@@ -95,7 +78,6 @@ class VerifikasiSaw extends Command
             }
         }
 
-        // --- 5. semua 36 kombinasi: total bobot harus 1.0000 ---
         $this->newLine();
         $this->comment('Pemeriksaan seluruh 36 kombinasi profil');
         $this->line(str_repeat('-', 78));
@@ -115,7 +97,6 @@ class VerifikasiSaw extends Command
         $total++;
         $gagal += $this->lapor("Total bobot 36 kombinasi ({$jumlah} kombinasi)", $melenceng === 0, $melenceng);
 
-        // --- ringkasan ---
         $this->newLine();
         $this->line(str_repeat('=', 78));
         $lulus = $total - $gagal;
@@ -129,7 +110,6 @@ class VerifikasiSaw extends Command
         return self::FAILURE;
     }
 
-    /** Cetak satu baris hasil dan kembalikan 1 kalau gagal, 0 kalau lolos. */
     private function lapor(string $label, bool $ok, float $selisih = 0, string $catatan = ''): int
     {
         $status = $ok ? '<fg=green>LULUS</>' : '<fg=red>GAGAL</>';

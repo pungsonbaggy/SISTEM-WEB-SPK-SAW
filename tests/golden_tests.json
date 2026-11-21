@@ -1,405 +1,90 @@
 {
- "ambang": 2,
- "kasus": [
-  {
-   "profil": {
-    "minat": "Snorkeling",
-    "anggaran": "Sedang",
-    "jarak": "Sedang"
-   },
-   "bobot": [
-    0.1409,
-    0.1541,
-    0.1585,
-    0.1938,
-    0.1767,
-    0.176
-   ],
-   "dikeluarkan": [
-    "A4",
-    "A10",
-    "A12"
-   ],
-   "jumlah_kandidat": 12,
-   "top5": [
+  "ambang": 1,
+  "kasus": [
     {
-     "kode": "A1",
-     "v": 0.7445
+      "profil": {
+        "minat": "Snorkeling",
+        "anggaran": "Rendah",
+        "jarak": "Dekat"
+      },
+      "bobot": [0.1528, 0.1468, 0.1737, 0.1629, 0.1843, 0.1795],
+      "dikeluarkan": [],
+      "jumlah_kandidat": 14,
+      "top5": [
+        {"kode": "A11", "v": 0.8577},
+        {"kode": "A9", "v": 0.7992},
+        {"kode": "A2", "v": 0.7642},
+        {"kode": "A13", "v": 0.7637},
+        {"kode": "A1", "v": 0.7599}
+      ]
     },
     {
-     "kode": "A15",
-     "v": 0.7357
+      "profil": {
+        "minat": "Snorkeling",
+        "anggaran": "Sedang",
+        "jarak": "Sedang"
+      },
+      "bobot": [0.1304, 0.1323, 0.1918, 0.1789, 0.1896, 0.1769],
+      "dikeluarkan": [],
+      "jumlah_kandidat": 14,
+      "top5": [
+        {"kode": "A11", "v": 0.8722},
+        {"kode": "A9", "v": 0.8082},
+        {"kode": "A1", "v": 0.7885},
+        {"kode": "A7", "v": 0.7867},
+        {"kode": "A2", "v": 0.7865}
+      ]
     },
     {
-     "kode": "A8",
-     "v": 0.7266
+      "profil": {
+        "minat": "Diving",
+        "anggaran": "Tinggi",
+        "jarak": "Jauh"
+      },
+      "bobot": [0.1144, 0.1161, 0.1929, 0.1919, 0.1939, 0.1909],
+      "dikeluarkan": [],
+      "jumlah_kandidat": 14,
+      "top5": [
+        {"kode": "A9", "v": 0.8213},
+        {"kode": "A1", "v": 0.8145},
+        {"kode": "A7", "v": 0.8129},
+        {"kode": "A13", "v": 0.8054},
+        {"kode": "A14", "v": 0.7914}
+      ]
     },
     {
-     "kode": "A2",
-     "v": 0.7145
+      "profil": {
+        "minat": "Wisata Pantai",
+        "anggaran": "Rendah",
+        "jarak": "Dekat"
+      },
+      "bobot": [0.1651, 0.1663, 0.1723, 0.1497, 0.1847, 0.1620],
+      "dikeluarkan": [],
+      "jumlah_kandidat": 14,
+      "top5": [
+        {"kode": "A11", "v": 0.8394},
+        {"kode": "A12", "v": 0.8019},
+        {"kode": "A9", "v": 0.7833},
+        {"kode": "A4", "v": 0.7785},
+        {"kode": "A10", "v": 0.7657}
+      ]
     },
     {
-     "kode": "A13",
-     "v": 0.6829
+      "profil": {
+        "minat": "Wisata Pulau",
+        "anggaran": "Sedang",
+        "jarak": "Sedang"
+      },
+      "bobot": [0.1461, 0.1511, 0.1817, 0.1679, 0.1825, 0.1707],
+      "dikeluarkan": [],
+      "jumlah_kandidat": 14,
+      "top5": [
+        {"kode": "A9", "v": 0.7956},
+        {"kode": "A2", "v": 0.7661},
+        {"kode": "A13", "v": 0.7621},
+        {"kode": "A1", "v": 0.7604},
+        {"kode": "A7", "v": 0.7583}
+      ]
     }
-   ],
-   "perangkingan_lengkap": [
-    {
-     "kode": "A1",
-     "v": 0.7445
-    },
-    {
-     "kode": "A15",
-     "v": 0.7357
-    },
-    {
-     "kode": "A8",
-     "v": 0.7266
-    },
-    {
-     "kode": "A2",
-     "v": 0.7145
-    },
-    {
-     "kode": "A13",
-     "v": 0.6829
-    },
-    {
-     "kode": "A3",
-     "v": 0.6827
-    },
-    {
-     "kode": "A6",
-     "v": 0.6826
-    },
-    {
-     "kode": "A7",
-     "v": 0.6766
-    },
-    {
-     "kode": "A9",
-     "v": 0.6758
-    },
-    {
-     "kode": "A14",
-     "v": 0.6455
-    },
-    {
-     "kode": "A11",
-     "v": 0.6298
-    },
-    {
-     "kode": "A5",
-     "v": 0.6116
-    }
-   ]
-  },
-  {
-   "profil": {
-    "minat": "Diving",
-    "anggaran": "Tinggi",
-    "jarak": "Jauh"
-   },
-   "bobot": [
-    0.105,
-    0.1314,
-    0.1788,
-    0.2076,
-    0.1892,
-    0.188
-   ],
-   "dikeluarkan": [
-    "A2",
-    "A3",
-    "A4",
-    "A5",
-    "A6",
-    "A10",
-    "A11",
-    "A12"
-   ],
-   "jumlah_kandidat": 7,
-   "top5": [
-    {
-     "kode": "A7",
-     "v": 0.7428
-    },
-    {
-     "kode": "A15",
-     "v": 0.7367
-    },
-    {
-     "kode": "A1",
-     "v": 0.706
-    },
-    {
-     "kode": "A8",
-     "v": 0.7026
-    },
-    {
-     "kode": "A13",
-     "v": 0.6733
-    }
-   ],
-   "perangkingan_lengkap": [
-    {
-     "kode": "A7",
-     "v": 0.7428
-    },
-    {
-     "kode": "A15",
-     "v": 0.7367
-    },
-    {
-     "kode": "A1",
-     "v": 0.706
-    },
-    {
-     "kode": "A8",
-     "v": 0.7026
-    },
-    {
-     "kode": "A13",
-     "v": 0.6733
-    },
-    {
-     "kode": "A9",
-     "v": 0.6674
-    },
-    {
-     "kode": "A14",
-     "v": 0.6565
-    }
-   ]
-  },
-  {
-   "profil": {
-    "minat": "Wisata Pantai",
-    "anggaran": "Rendah",
-    "jarak": "Dekat"
-   },
-   "bobot": [
-    0.1959,
-    0.1908,
-    0.1434,
-    0.1621,
-    0.1639,
-    0.1439
-   ],
-   "dikeluarkan": [],
-   "jumlah_kandidat": 15,
-   "top5": [
-    {
-     "kode": "A4",
-     "v": 0.9352
-    },
-    {
-     "kode": "A12",
-     "v": 0.8842
-    },
-    {
-     "kode": "A10",
-     "v": 0.8395
-    },
-    {
-     "kode": "A2",
-     "v": 0.7831
-    },
-    {
-     "kode": "A8",
-     "v": 0.7663
-    }
-   ],
-   "perangkingan_lengkap": [
-    {
-     "kode": "A4",
-     "v": 0.9352
-    },
-    {
-     "kode": "A12",
-     "v": 0.8842
-    },
-    {
-     "kode": "A10",
-     "v": 0.8395
-    },
-    {
-     "kode": "A2",
-     "v": 0.7831
-    },
-    {
-     "kode": "A8",
-     "v": 0.7663
-    },
-    {
-     "kode": "A6",
-     "v": 0.758
-    },
-    {
-     "kode": "A3",
-     "v": 0.7412
-    },
-    {
-     "kode": "A11",
-     "v": 0.706
-    },
-    {
-     "kode": "A14",
-     "v": 0.6891
-    },
-    {
-     "kode": "A5",
-     "v": 0.6658
-    },
-    {
-     "kode": "A1",
-     "v": 0.6468
-    },
-    {
-     "kode": "A15",
-     "v": 0.6349
-    },
-    {
-     "kode": "A13",
-     "v": 0.6285
-    },
-    {
-     "kode": "A7",
-     "v": 0.6213
-    },
-    {
-     "kode": "A9",
-     "v": 0.6194
-    }
-   ]
-  },
-  {
-   "profil": {
-    "minat": "Wisata Pulau",
-    "anggaran": "Tinggi",
-    "jarak": "Jauh"
-   },
-   "bobot": [
-    0.1284,
-    0.1425,
-    0.1638,
-    0.2023,
-    0.1833,
-    0.1797
-   ],
-   "dikeluarkan": [
-    "A4",
-    "A10",
-    "A11",
-    "A12"
-   ],
-   "jumlah_kandidat": 11,
-   "top5": [
-    {
-     "kode": "A15",
-     "v": 0.7526
-    },
-    {
-     "kode": "A7",
-     "v": 0.7254
-    },
-    {
-     "kode": "A1",
-     "v": 0.7247
-    },
-    {
-     "kode": "A2",
-     "v": 0.7221
-    },
-    {
-     "kode": "A8",
-     "v": 0.6965
-    }
-   ],
-   "perangkingan_lengkap": [
-    {
-     "kode": "A15",
-     "v": 0.7526
-    },
-    {
-     "kode": "A7",
-     "v": 0.7254
-    },
-    {
-     "kode": "A1",
-     "v": 0.7247
-    },
-    {
-     "kode": "A2",
-     "v": 0.7221
-    },
-    {
-     "kode": "A8",
-     "v": 0.6965
-    },
-    {
-     "kode": "A13",
-     "v": 0.6952
-    },
-    {
-     "kode": "A3",
-     "v": 0.6928
-    },
-    {
-     "kode": "A9",
-     "v": 0.6887
-    },
-    {
-     "kode": "A6",
-     "v": 0.6882
-    },
-    {
-     "kode": "A14",
-     "v": 0.6488
-    },
-    {
-     "kode": "A5",
-     "v": 0.6229
-    }
-   ]
-  }
- ],
- "peta_juara": {
-  "Snorkeling|Rendah|Dekat": "A8",
-  "Snorkeling|Rendah|Sedang": "A1",
-  "Snorkeling|Rendah|Jauh": "A1",
-  "Snorkeling|Sedang|Dekat": "A1",
-  "Snorkeling|Sedang|Sedang": "A1",
-  "Snorkeling|Sedang|Jauh": "A1",
-  "Snorkeling|Tinggi|Dekat": "A1",
-  "Snorkeling|Tinggi|Sedang": "A1",
-  "Snorkeling|Tinggi|Jauh": "A1",
-  "Diving|Rendah|Dekat": "A7",
-  "Diving|Rendah|Sedang": "A7",
-  "Diving|Rendah|Jauh": "A7",
-  "Diving|Sedang|Dekat": "A7",
-  "Diving|Sedang|Sedang": "A7",
-  "Diving|Sedang|Jauh": "A7",
-  "Diving|Tinggi|Dekat": "A7",
-  "Diving|Tinggi|Sedang": "A7",
-  "Diving|Tinggi|Jauh": "A7",
-  "Wisata Pantai|Rendah|Dekat": "A4",
-  "Wisata Pantai|Rendah|Sedang": "A4",
-  "Wisata Pantai|Rendah|Jauh": "A4",
-  "Wisata Pantai|Sedang|Dekat": "A4",
-  "Wisata Pantai|Sedang|Sedang": "A4",
-  "Wisata Pantai|Sedang|Jauh": "A4",
-  "Wisata Pantai|Tinggi|Dekat": "A4",
-  "Wisata Pantai|Tinggi|Sedang": "A4",
-  "Wisata Pantai|Tinggi|Jauh": "A4",
-  "Wisata Pulau|Rendah|Dekat": "A2",
-  "Wisata Pulau|Rendah|Sedang": "A15",
-  "Wisata Pulau|Rendah|Jauh": "A15",
-  "Wisata Pulau|Sedang|Dekat": "A15",
-  "Wisata Pulau|Sedang|Sedang": "A15",
-  "Wisata Pulau|Sedang|Jauh": "A15",
-  "Wisata Pulau|Tinggi|Dekat": "A15",
-  "Wisata Pulau|Tinggi|Sedang": "A15",
-  "Wisata Pulau|Tinggi|Jauh": "A15"
- }
+  ]
 }

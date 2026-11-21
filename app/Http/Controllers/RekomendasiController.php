@@ -7,25 +7,14 @@ use App\Models\LogRekomendasi;
 use App\Services\SawService;
 use Illuminate\Support\Str;
 
-/**
- * Menangani permintaan rekomendasi.
- *
- * Alur:
- *   POST /rekomendasi  -> validasi, hitung, simpan ke session + log, redirect
- *   GET  /rekomendasi  -> tampilkan hasil dari session
- *
- * Kenapa memakai redirect (bukan langsung return view)?
- * Supaya kalau halaman di-refresh, browser tidak mengirim ulang form
- * (menghindari data ganda pada log_rekomendasi).
- */
 class RekomendasiController extends Controller
 {
+    // Proses input profil wisatawan, hitung rekomendasi SAW, catat 5 besar ke log, dan simpan ke session
     public function store(ProfilRequest $request, SawService $saw)
     {
         $profil = $request->validated();
         $hasil = $saw->hitung($profil['minat'], $profil['anggaran'], $profil['jarak']);
 
-        // Kalau tidak ada destinasi yang layak, jangan tampilkan halaman kosong.
         if (empty($hasil['hasil'])) {
             return back()
                 ->withInput()
@@ -36,7 +25,6 @@ class RekomendasiController extends Controller
         $top5 = array_slice($hasil['hasil'], 0, 5);
         $sesiId = (string) Str::uuid();
 
-        // Catat ke log_rekomendasi untuk analisis sebaran pada Bab IV.
         foreach ($top5 as $i => $row) {
             LogRekomendasi::create([
                 'sesi_id' => $sesiId,
@@ -53,7 +41,7 @@ class RekomendasiController extends Controller
             'sesi_id' => $sesiId,
             'profil' => $profil,
             'bobot' => $hasil['bobot'],
-            'hasil' => $top5,
+            'hasil' => $hasil['hasil'],
             'jumlah_layak' => count($hasil['hasil']),
             'dikeluarkan' => $hasil['dikeluarkan'],
             'ambang' => $hasil['ambang'],
@@ -62,7 +50,7 @@ class RekomendasiController extends Controller
         return redirect()->route('rekomendasi.show');
     }
 
-    public function show(SawService $saw)
+    public function show()
     {
         $data = session('rekomendasi');
 
