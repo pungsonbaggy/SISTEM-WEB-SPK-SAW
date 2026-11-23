@@ -31,7 +31,7 @@ DB_HOST=127.0.0.1
 DB_PORT=5432
 DB_DATABASE=spk_saw_db
 DB_USERNAME=postgres
-DB_PASSWORD=819107
+DB_PASSWORD=*****
 ```
 
 ### 2.2 Migrasi dan Pengisian Data (Seeding)
